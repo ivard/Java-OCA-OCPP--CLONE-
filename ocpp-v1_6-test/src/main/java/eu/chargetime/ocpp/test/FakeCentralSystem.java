@@ -42,7 +42,46 @@ import eu.chargetime.ocpp.model.remotetrigger.TriggerMessageRequest;
 import eu.chargetime.ocpp.model.remotetrigger.TriggerMessageRequestType;
 import eu.chargetime.ocpp.test.FakeCentral.serverType;
 
+import java.io.IOException;
+import java.net.MalformedURLException;
+
 public class FakeCentralSystem {
+    public static void main(String [ ] args) {
+        FakeCentralSystem centralSystem = new FakeCentralSystem(FakeCentral.serverType.SOAP);
+        
+        try {
+            centralSystem.started();
+            System.out.println(centralSystem.connected());
+        } catch (Exception e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+
+        try {
+            FakeChargePoint fcp = new FakeChargePoint(FakeChargePoint.clientType.SOAP);
+            fcp.connect();
+            try {
+                fcp.sendHeartbeatRequest();
+                Thread.sleep(2000);
+            } catch (Exception e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+            System.out.println(fcp.hasReceivedHeartbeatConfirmation());
+            fcp.disconnect();
+        } catch (MalformedURLException e1) {
+            // TODO Auto-generated catch block
+            e1.printStackTrace();
+        }
+
+        try {
+            System.in.read();
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        centralSystem.stopped();
+    }
     private Server server;
 
     DummyHandlers dummyHandlers;
