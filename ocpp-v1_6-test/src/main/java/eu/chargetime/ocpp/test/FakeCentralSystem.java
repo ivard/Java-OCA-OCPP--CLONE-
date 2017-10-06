@@ -58,23 +58,6 @@ public class FakeCentralSystem {
         }
 
         try {
-            FakeChargePoint fcp = new FakeChargePoint(FakeChargePoint.clientType.SOAP);
-            fcp.connect();
-            try {
-                fcp.sendHeartbeatRequest();
-                Thread.sleep(2000);
-            } catch (Exception e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-            }
-            System.out.println(fcp.hasReceivedHeartbeatConfirmation());
-            fcp.disconnect();
-        } catch (MalformedURLException e1) {
-            // TODO Auto-generated catch block
-            e1.printStackTrace();
-        }
-
-        try {
             System.in.read();
         } catch (IOException e) {
             // TODO Auto-generated catch block

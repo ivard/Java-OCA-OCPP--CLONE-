@@ -46,6 +46,27 @@ import java.util.Calendar;
  */
 public class FakeChargePoint
 {
+
+    public static void main(String[] args) {
+        try {
+            FakeChargePoint fcp = new FakeChargePoint(FakeChargePoint.clientType.SOAP,
+                    "192.168.137.101");
+            fcp.connect();
+            try {
+                fcp.sendHeartbeatRequest();
+                Thread.sleep(2000);
+            } catch (Exception e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+            System.out.println(fcp.hasReceivedHeartbeatConfirmation());
+            fcp.disconnect();
+        } catch (MalformedURLException e1) {
+            // TODO Auto-generated catch block
+            e1.printStackTrace();
+        }
+    }
+
     private Client client;
     private Confirmation receivedConfirmation;
     private Request receivedRequest;
@@ -57,14 +78,14 @@ public class FakeChargePoint
     private String url;
 
     public FakeChargePoint() throws MalformedURLException {
-        this(clientType.JSON);
+        this(clientType.JSON,"localhost");
     }
 
     public enum clientType {
         JSON, SOAP
     }
 
-    public FakeChargePoint(clientType type) throws MalformedURLException {
+    public FakeChargePoint(clientType type, String url) throws MalformedURLException {
         core = new ClientCoreProfile(new ClientCoreEventHandler() {
             @Override
             public ChangeAvailabilityConfirmation handleChangeAvailabilityRequest(ChangeAvailabilityRequest request) {
@@ -154,11 +175,11 @@ public class FakeChargePoint
         switch (type) {
             case JSON:
                 client = new JSONClient(core, "test", false);
-                url = "ws://localhost:8887";
+                url = "ws://" + url + ":8887";
                 break;
             case SOAP:
                 client = new SOAPClient("me", new URL("http://localhost:8889"), core, false);
-                url = "http://localhost:8890";
+                url = "http://" + url + ":8890";
                 break;
         }
 
