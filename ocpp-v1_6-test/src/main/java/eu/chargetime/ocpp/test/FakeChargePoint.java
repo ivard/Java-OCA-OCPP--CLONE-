@@ -46,11 +46,9 @@ import java.util.Calendar;
  */
 public class FakeChargePoint
 {
-
     public static void main(String[] args) {
         try {
-            FakeChargePoint fcp = new FakeChargePoint(FakeChargePoint.clientType.SOAP,
-                    "192.168.137.101");
+            FakeChargePoint fcp = new FakeChargePoint(FakeChargePoint.clientType.SOAP, "192.168.137.101", "192.168.137.103");
             fcp.connect();
             try {
                 fcp.sendHeartbeatRequest();
@@ -78,14 +76,14 @@ public class FakeChargePoint
     private String url;
 
     public FakeChargePoint() throws MalformedURLException {
-        this(clientType.JSON,"localhost");
+        this(clientType.JSON, "localhost", "localhost");
     }
 
     public enum clientType {
         JSON, SOAP
     }
 
-    public FakeChargePoint(clientType type, String url) throws MalformedURLException {
+    public FakeChargePoint(clientType type, String serverURL, String localURL) throws MalformedURLException {
         core = new ClientCoreProfile(new ClientCoreEventHandler() {
             @Override
             public ChangeAvailabilityConfirmation handleChangeAvailabilityRequest(ChangeAvailabilityRequest request) {
@@ -175,11 +173,11 @@ public class FakeChargePoint
         switch (type) {
             case JSON:
                 client = new JSONClient(core, "test", false);
-                url = "ws://" + url + ":8887";
+                url = "ws://" + serverURL + ":8887";
                 break;
             case SOAP:
-                client = new SOAPClient("me", new URL("http://localhost:8889"), core, false);
-                url = "http://" + url + ":8890";
+                client = new SOAPClient("me", new URL("http://" + localURL + ":8889"), core, false);
+                url = "http://" + serverURL + ":8890";
                 break;
         }
 
