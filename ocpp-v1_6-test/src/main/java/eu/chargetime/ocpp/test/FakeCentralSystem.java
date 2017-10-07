@@ -47,11 +47,11 @@ import java.net.MalformedURLException;
 
 public class FakeCentralSystem {
     public static void main(String [ ] args) {
-        FakeCentralSystem centralSystem = new FakeCentralSystem(FakeCentral.serverType.SOAP);
+        FakeCentralSystem centralSystem = new FakeCentralSystem(FakeCentral.serverType.SOAP,
+                "192.168.137.101");
         
         try {
             centralSystem.started();
-            System.out.println(centralSystem.connected());
         } catch (Exception e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
@@ -63,15 +63,18 @@ public class FakeCentralSystem {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
+        centralSystem.clientLost();
         centralSystem.stopped();
     }
     private Server server;
+    private final String hostURL;
 
     DummyHandlers dummyHandlers;
     private boolean isStarted;
 
-    FakeCentralSystem(serverType type) {
+    FakeCentralSystem(serverType type, String hostURL) {
         dummyHandlers = new DummyHandlers();
+        this.hostURL = hostURL;
 
         ServerCoreProfile serverCoreProfile = new ServerCoreProfile(dummyHandlers.createServerCoreEventHandler());
 
@@ -112,7 +115,7 @@ public class FakeCentralSystem {
             if (server instanceof JSONServer)
                 port = 8887;
 
-            server.open("localhost", port, dummyHandlers.generateServerEventsHandler());
+            server.open(hostURL, port, dummyHandlers.generateServerEventsHandler());
             isStarted = true;
         }
     }

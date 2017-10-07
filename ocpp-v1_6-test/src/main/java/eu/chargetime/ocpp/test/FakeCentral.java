@@ -36,7 +36,7 @@ public class FakeCentral {
 
     synchronized public static FakeCentralSystem getSystem(serverType type) {
         if (!systems.containsKey(type))
-            systems.put(type, new FakeCentralSystem(type));
+            systems.put(type, new FakeCentralSystem(type, "localhost"));
         return systems.get(type);
     }
 
