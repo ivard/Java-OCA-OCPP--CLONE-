@@ -47,7 +47,7 @@ import java.net.MalformedURLException;
 
 public class FakeCentralSystem {
     public static void main(String [ ] args) {
-        FakeCentralSystem centralSystem = new FakeCentralSystem(FakeCentral.serverType.SOAP,
+        FakeCentralSystem centralSystem = new FakeCentralSystem(FakeCentral.serverType.JSON,
                 "192.168.137.101");
         
         try {

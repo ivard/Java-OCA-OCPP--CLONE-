@@ -48,7 +48,7 @@ public class FakeChargePoint
 {
     public static void main(String[] args) {
         try {
-            FakeChargePoint fcp = new FakeChargePoint(FakeChargePoint.clientType.SOAP, "192.168.137.101", "192.168.137.103");
+            FakeChargePoint fcp = new FakeChargePoint(FakeChargePoint.clientType.JSON, "192.168.137.101", "192.168.137.103");
             fcp.connect();
             try {
                 fcp.sendHeartbeatRequest();
