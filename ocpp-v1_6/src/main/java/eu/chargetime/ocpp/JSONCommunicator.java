@@ -141,6 +141,7 @@ public class JSONCommunicator extends Communicator {
         Message message = null;
         JsonParser parser = new JsonParser();
         JsonArray array = parser.parse(json.toString()).getAsJsonArray();
+        System.out.println("Parsed");
 
         if (array.get(INDEX_MESSAGEID).getAsInt() == TYPENUMBER_CALL) {
             message = new CallMessage();

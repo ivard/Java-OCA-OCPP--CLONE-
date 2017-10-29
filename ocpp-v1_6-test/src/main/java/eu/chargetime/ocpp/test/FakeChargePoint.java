@@ -48,10 +48,16 @@ public class FakeChargePoint
 {
     public static void main(String[] args) {
         try {
-            FakeChargePoint fcp = new FakeChargePoint(FakeChargePoint.clientType.JSON, "192.168.137.101", "192.168.137.103");
+            FakeChargePoint fcp = new FakeChargePoint(FakeChargePoint.clientType.JSON, "192.168.137.102", "192.168.137.101");
             fcp.connect();
             try {
                 fcp.sendHeartbeatRequest();
+                fcp.sendBootNotification("Radboud", "Fuzzer");
+                fcp.sendAuthorizeRequest("Authorize");
+                fcp.sendMeterValuesRequest();
+                fcp.sendStartTransactionRequest();
+                fcp.sendStatusNotificationRequest();
+                fcp.sendStopTransactionRequest();
                 Thread.sleep(2000);
             } catch (Exception e) {
                 // TODO Auto-generated catch block

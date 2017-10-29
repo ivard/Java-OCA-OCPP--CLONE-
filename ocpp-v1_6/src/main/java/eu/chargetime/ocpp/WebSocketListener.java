@@ -70,6 +70,7 @@ public class WebSocketListener implements Listener {
 
             @Override
             public void onMessage(WebSocket webSocket, String s) {
+                System.out.println(s);
                 sockets.get(webSocket).relay(s);
             }
 
